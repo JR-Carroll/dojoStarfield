@@ -69,8 +69,8 @@ require([
 
       if (flip === true) {
         // Set the starting positions.
-        startNear = 0;
-        startFar =  0;
+        startNear = 360;
+        startFar =  360;
         // Set the ending positions.
         endNear = -0.05;
         endFar = 0.05;
@@ -86,7 +86,9 @@ require([
       }
         // Spinning behaviors, asynchronously running!
         new gfxFX.animateTransform({
-            duration: 4500,
+            duration: 7000,
+            repeat: -1,
+            easing: function(n) { return n;},
             shape: starsNear,
             transform: [{
                 name: 'rotateAt',
@@ -95,7 +97,7 @@ require([
             }]
         }).play();
         new gfxFX.animateTransform({
-            duration: 4500,
+            duration: 7000,
             shape: starsFar,
             transform: [{
                 name: 'rotateAt',
@@ -108,8 +110,8 @@ require([
     // Start off by spinning the stars at least once!
     spinStars();
 
-    // Then, start to spin the stars ever 4.5 seconds.
-    setInterval(function(){
-      spinStars();
-    }, 4500);
+    // // Then, start to spin the stars ever 4.5 seconds.
+    // setInterval(function(){
+    //   spinStars();
+    // }, 4500);
 });
