@@ -1,9 +1,9 @@
 require([
   "dojo/dom", "dojo/fx", "dojox/gfx", "dojox/gfx/Moveable", "dojo/_base/array", "dojo/window",
-  "dojox/gfx/fx", "dojo/domReady!"
+  "dojox/gfx/fx", "dojo/dom-style", "dojo/fx/easing", "dojo/domReady!"
 ],
 
-  function (dom, fx, gfx, move, array, win, gfxFX) {
+  function (dom, fx, gfx, move, array, win, gfxFX, style, easing) {
     // Create a new dojo surface element.  This allows to draw allllll
     // over the f'in place.  How sweet is that?
     var canvasEle = dom.byId("canvas");
@@ -67,13 +67,15 @@ require([
 
     function spinStars() {
 
+      // This no longer flips between false/true, but the behavior is left
+      // here just in case we want to go back to it...
       if (flip === true) {
         // Set the starting positions.
-        startNear = 360;
-        startFar =  360;
+        startNear = 0;
+        startFar =  0;
         // Set the ending positions.
-        endNear = -0.05;
-        endFar = 0.05;
+        endNear = -360;
+        endFar = 360;
         flip = false;
       } else if (flip === false) {
         // Set the starting positions.
@@ -86,7 +88,7 @@ require([
       }
         // Spinning behaviors, asynchronously running!
         new gfxFX.animateTransform({
-            duration: 7000,
+            duration: 7000000,
             repeat: -1,
             easing: function(n) { return n;},
             shape: starsNear,
@@ -97,21 +99,63 @@ require([
             }]
         }).play();
         new gfxFX.animateTransform({
-            duration: 7000,
+            duration: 7000000,
             shape: starsFar,
+            easing: function(n) { return n;},
             transform: [{
                 name: 'rotateAt',
                 start: [startFar, vpScreenX, vpScreenY],
                 end: [endFar, vpScreenX, vpScreenY]
             }]
         }).play();
+      }
+
+    function showLogBox() {
+      // Set the initial style of the box as invisible.
+      style.set("logbox", "opacity", 0);
+      style.set("username", "opacity", 0);
+      style.set("password", "opacity", 0);
+
+      // Have some control over the fade-in behavior.
+      var fadeArgs = {
+        node: "logbox",
+        duration: 2000
+      };
+
+      var fadeBox = new dojo.fadeIn({
+                    node: dom.byId("logbox"),
+                    delay: 1000,
+                    duration: 1500
+                  });
+
+      var widden = new dojo.animateProperty({
+                   node: dom.byId("logbox"),
+                   duration: 4500,
+                   easing: easing["bounceIn"],
+                   properties: {width: 300}
+                  });
+
+      var heighten = new dojo.animateProperty({
+                     node: dom.byId("logbox"),
+                     easing: easing["bounceOut"],
+                     duration: 1500,
+                     properties: {height: 150}
+                    });
+
+      var fadeUsername = new dojo.fadeIn({
+                            node: dom.byId("username"),
+                            duration: 1000
+                          });
+
+      var fadePassword = new dojo.fadeIn({
+                            node: dom.byId("password"),
+                            duration: 1000
+                          });
+
+      fx.chain([fadeBox, widden, heighten, fadeUsername, fadePassword]).play();
     }
 
     // Start off by spinning the stars at least once!
     spinStars();
-
-    // // Then, start to spin the stars ever 4.5 seconds.
-    // setInterval(function(){
-    //   spinStars();
-    // }, 4500);
+    showLogBox();
 });
