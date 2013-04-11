@@ -18,8 +18,8 @@ html, body {
 
 .fadebox {
     position: absolute;
-    width: 0px;
-    height: 0px;
+    width: 1px;
+    height: 1px;
     top: 20px;
     left: 30px;
     border: 1px solid gray;

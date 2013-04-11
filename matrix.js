@@ -1,9 +1,9 @@
 require([
   "dojo/dom", "dojo/fx", "dojox/gfx", "dojox/gfx/Moveable", "dojo/_base/array", "dojo/window",
-  "dojox/gfx/fx", "dojo/dom-style", "dojo/fx/easing", "dojo/domReady!"
+  "dojox/gfx/fx", "dojo/dom-style", "dojo/fx/easing", "dijit/form/ValidationTextBox", "dojo/domReady!"
 ],
 
-  function (dom, fx, gfx, move, array, win, gfxFX, style, easing) {
+  function (dom, fx, gfx, move, array, win, gfxFX, style, easing, validText) {
     // Create a new dojo surface element.  This allows to draw allllll
     // over the f'in place.  How sweet is that?
     var canvasEle = dom.byId("canvas");
